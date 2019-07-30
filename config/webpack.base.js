@@ -3,7 +3,7 @@ const path = require('path')
 const resolve = (dir) => path.join(__dirname, '..', dir)
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './demo/index.tsx',
   output: {
     path: resolve('dist'),
     filename: '[name].js',
@@ -21,7 +21,7 @@ module.exports = {
         test: /\.(tsx?|jsx?)$/,
         enforce: 'pre',
         loader: 'eslint-loader',
-        include: resolve('src'),
+        include: [resolve('demo'), resolve('src')],
         options: {
           formatter: require('eslint-friendly-formatter'),
           emitWarning: true
@@ -29,7 +29,7 @@ module.exports = {
       },
       {
         test: /\.(tsx?|jsx)$/,
-        include: resolve('src'),
+        include: [resolve('demo'), resolve('src')],
         use: 'ts-loader'
       },
       {

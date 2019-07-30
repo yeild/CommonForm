@@ -1,0 +1,30 @@
+html, body {
+  margin: 0
+}
+
+.ant-menu-item {
+  margin-top: 0!important;
+}
+
+.ant-pagination {
+  margin-right: 10px!important;
+}
+
+.app-header {
+  background-color: #222;
+  line-height: 40px;
+  font-size: 16px;
+  color: white;
+  padding: 0 20px;
+}
+
+.app-menu {
+  float: left;
+  width: 200px!important;
+  height: calc(100vh - 50px)
+}
+
+.app-content {
+  float: left;
+  width: calc(100vw - 200px);
+}
