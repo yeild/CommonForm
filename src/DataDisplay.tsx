@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Divider, Table, Select, Input, Button, Modal } from 'antd'
 import DataEdit from './DataEdit'
 import './index.css'
 
-interface DataTypes {
-  columns: any
-  dataSource: any
-  rowKey: any
+interface propTypes {
+  table: any
+  onSearch?: (key:string) => void
   container?: 'modal' | 'drawer'
   title?: string
   fields: any
 }
 
-function DataDisplay ({ columns, dataSource, rowKey, container, title, fields }:DataTypes) {
-  const [isVisible, setIsVisible] = useState(true)
+function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
+  const [searchKey, setSearchKey] = useState('')
+  const [isVisible, setIsVisible] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
@@ -31,18 +31,26 @@ function DataDisplay ({ columns, dataSource, rowKey, container, title, fields }:
     setModalTitle('编辑' + title)
     setIsVisible(true)
   }
-  const columnsWithAction = [...columns, {
-    key: 'action',
-    title: '操作',
-    render: () => (
-      <span>
+
+  const tableProps = {
+    ...table,
+    columns: [
+      ...table.columns,
+      {
+        key: 'action',
+        title: '操作',
+        render: () => (
+          <span>
         <a href="javascript:" onClick={openEditModal}>编辑</a>
         <Divider type="vertical"/>
         <a href="javascript:">删除</a>
       </span>
-    )
-  }]
+        )
+      }
+    ]
+  }
 
+  console.log(table)
 
   function confirm () {
     Modal.confirm({
@@ -55,19 +63,21 @@ function DataDisplay ({ columns, dataSource, rowKey, container, title, fields }:
   return (
     <div className="commonTable">
       <div className="commonTable-toolbar">
-        <div className="commonTable-search">
-          <Input placeholder="用户名"/>
-          <Button type="primary">查询</Button>
-        </div>
+        {
+          onSearch ? (
+            <div className="commonTable-search">
+              <Input placeholder="用户名" onChange={e => setSearchKey(e.target.value)}/>
+              <Button type="primary" onClick={() => onSearch(searchKey)}>查询</Button>
+            </div>
+          ) : null
+        }
         <span>
           <Button type="primary" onClick={openAddModal}>添加</Button>
           <Button type="danger" onClick={confirm}>删除</Button>
         </span>
       </div>
       <Table
-        columns={columnsWithAction}
-        dataSource={dataSource}
-        rowKey={rowKey}
+        {...tableProps}
         rowSelection={rowSelection}/>
       <DataEdit
         container={container}

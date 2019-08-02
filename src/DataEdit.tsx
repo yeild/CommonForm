@@ -13,7 +13,7 @@ interface PropTypes {
 function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, fields }) {
   function getFields () {
     const children = []
-    fields.forEach(function ({ title, col = 1, labelCol = { span: 6 }, wrapperCol = { span: 16 }, fields }) {
+    fields.forEach(function ({ title, col = 1, labelCol = { span: 6 }, wrapperCol = { span: 16 }, fields }, index) {
       const rows = []
       if (title) rows.push(<Typography.Title level={4}>{title}</Typography.Title>)
 
@@ -53,7 +53,7 @@ function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, 
         )
       })
       children.push(
-        <Row>
+        <Row key={index}>
           {rows}
         </Row>
       )

@@ -34,21 +34,27 @@ function User () {
       name: 'John Brown',
       age: 32,
       gender: '男',
-      email: 'a@b.com'
+      tel: 13000000000,
+      email: 'a@b.com',
+      remark: 'xxx'
     },
     {
       id: 2,
       name: 'John Brown',
       age: 32,
       gender: '男',
-      email: 'a@b.com'
+      tel: 13000000000,
+      email: 'a@b.com',
+      remark: 'xxx'
     },
     {
       id: 3,
       name: 'John Brown',
-      gender: '男',
       age: 32,
-      email: 'a@b.com'
+      gender: '男',
+      tel: 13000000000,
+      email: 'a@b.com',
+      remark: 'xxx'
     }
   ]
   const fields = [
@@ -103,10 +109,8 @@ function User () {
   ]
   return (
     <DataDisplay
-      columns={columns}
-      dataSource={data}
+      table={{ columns, dataSource: data, rowKey: 'id' }}
       container="drawer"
-      rowKey="id"
       title="用户"
       fields={fields}/>
   )
