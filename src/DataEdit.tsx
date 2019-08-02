@@ -1,23 +1,46 @@
 import React from 'react'
 import { Modal, Drawer, Form, Typography, Row, Col, Input, InputNumber, Select, Button } from 'antd'
 
-interface PropTypes {
+interface DataEditPropTypes {
   form: any
   container?: 'modal' | 'drawer'
+  title: string
+  editType: string
   isVisible: boolean
   setIsVisible: (isVisible: boolean) => void
-  title: string
   fields: any
+  data: any
+  onSubmit: (data) => void
 }
 
-function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, fields }) {
+function DataEdit ({
+  isVisible,
+  setIsVisible,
+  container = 'modal',
+  title,
+  editType,
+  form,
+  fields,
+  data,
+  onSubmit
+}) {
   function getFields () {
+    const isCreate = editType === 'create'
     const children = []
     fields.forEach(function ({ title, col = 1, labelCol = { span: 6 }, wrapperCol = { span: 16 }, fields }, index) {
       const rows = []
       if (title) rows.push(<Typography.Title level={4}>{title}</Typography.Title>)
 
-      fields.forEach(function ({ dataIndex, title, required, props, rules, initialValue, disabled, type = 'string', placeholder = title, options }, index) {
+      fields.forEach(function ({
+        dataIndex,
+        title,
+        type = 'string',
+        initialValue,
+        rules,
+        placeholder = title,
+        options // 下拉框的选项
+      }, index) {
+        initialValue = isCreate ? initialValue : data[dataIndex]
         const getFieldDecorator = form.getFieldDecorator
         const input = (function () {
           if (type === 'string' || type === 'number' || type === 'textarea') {
@@ -25,9 +48,9 @@ function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, 
 
             return getFieldDecorator(dataIndex, {
               initialValue,
-              rules: [{ required, type }]
+              rules
               // @ts-ignore
-            })(<InputType placeholder={placeholder} disabled={disabled} {...props}/>)
+            })(<InputType placeholder={placeholder}/>)
           }
           return getFieldDecorator(dataIndex, {
             initialValue,
@@ -64,6 +87,11 @@ function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, 
   function hideEdit () {
     setIsVisible(false)
   }
+  function submit () {
+    form.validateFields(function (err, data) {
+      if (!err) onSubmit(data)
+    })
+  }
   const Container = container === 'modal' ? (
     <Modal
       className="commonTable-edit"
@@ -87,7 +115,7 @@ function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, 
         {getFields()}
         <Row>
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={hideEdit}>
+            <Button type="primary" onClick={submit}>
               保存
             </Button>
             <Button style={{ marginLeft: 8 }} onClick={hideEdit}>
@@ -101,6 +129,6 @@ function DataEdit ({ form, container = 'modal', title, isVisible, setIsVisible, 
   return Container
 }
 
-const WrappedDataEdit = Form.create<PropTypes>()(DataEdit)
+const WrappedDataEdit = Form.create<DataEditPropTypes>()(DataEdit)
 
 export default WrappedDataEdit

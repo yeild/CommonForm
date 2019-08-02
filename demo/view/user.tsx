@@ -31,30 +31,30 @@ function User () {
   const data = [
     {
       id: 1,
-      name: 'John Brown',
-      age: 32,
+      name: 'Allen Belem',
+      age: 20,
       gender: '男',
       tel: 13000000000,
-      email: 'a@b.com',
-      remark: 'xxx'
+      email: 'allen@brown.com',
+      remark: 'Allen Brown'
     },
     {
       id: 2,
-      name: 'John Brown',
-      age: 32,
+      name: 'Berry Jerry',
+      age: 21,
       gender: '男',
-      tel: 13000000000,
-      email: 'a@b.com',
-      remark: 'xxx'
+      tel: 13111111111,
+      email: 'berry@jerry.com',
+      remark: 'Berry Jerry'
     },
     {
       id: 3,
-      name: 'John Brown',
-      age: 32,
-      gender: '男',
-      tel: 13000000000,
-      email: 'a@b.com',
-      remark: 'xxx'
+      name: 'Anna Ella',
+      age: 22,
+      gender: '女',
+      tel: 13222222222,
+      email: 'anna@ella.com',
+      remark: 'Anna Ella'
     }
   ]
   const fields = [
@@ -64,7 +64,11 @@ function User () {
         {
           dataIndex: 'name',
           title: '姓名',
-          required: true
+          required: true,
+          rules: [{
+            required: true,
+            type: 'string'
+          }]
         },
         {
           dataIndex: 'gender',
@@ -82,12 +86,18 @@ function User () {
           dataIndex: 'tel',
           title: '手机号',
           type: 'number',
-          pattern: /^1[3456789]\d{9}$/
+          rules: [{
+            pattern: /^1[3456789]\d{9}$/,
+            message: '手机号格式错误'
+          }]
         },
         {
           dataIndex: 'email',
           title: '邮箱',
-          pattern: /^\w+@[a-z0-9]+\.[a-z]{2,4}$/
+          rules: [{
+            pattern: /^\w+@[a-z0-9]+\.[a-z]{2,4}$/,
+            message: '邮箱格式错误'
+          }]
         }
       ]
     },
@@ -107,12 +117,25 @@ function User () {
       ]
     },
   ]
+  function search (key) {
+    console.log(key)
+  }
+  function deleteItem (keys, items) {
+    console.log(keys)
+    console.log(items)
+  }
+  function submit (data) {
+    console.log(data)
+  }
   return (
     <DataDisplay
       table={{ columns, dataSource: data, rowKey: 'id' }}
+      onSearch={search}
+      onDelete={deleteItem}
       container="drawer"
       title="用户"
-      fields={fields}/>
+      fields={fields}
+      onSubmit={submit}/>
   )
 }
 

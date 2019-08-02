@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { Divider, Table, Select, Input, Button, Modal } from 'antd'
+import React, { useState } from 'react'
+import { Divider, Table, Input, Button, Modal, message } from 'antd'
 import DataEdit from './DataEdit'
 import './index.css'
 
-interface propTypes {
+interface DataDisplayPropTypes {
   table: any
   onSearch?: (key:string) => void
+  onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
   container?: 'modal' | 'drawer'
   title?: string
   fields: any
+  onSubmit: (data) => void
 }
 
-function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
+function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onSubmit }:DataDisplayPropTypes) {
   const [searchKey, setSearchKey] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
+  const [editType, setEditType] = useState('')
+  const [editData, setEditData] = useState({})
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
   const rowSelection = {
@@ -23,12 +27,34 @@ function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
       setSelectedRows(selectedRows)
     }
   }
+
+  function deleteRows () {
+    if (selectedRowKeys.length === 0) {
+      message.warning('请选择要删除的数据')
+      return
+    }
+    confirm(function () {
+      onDelete(selectedRowKeys, selectedRows)
+    })
+  }
+
+  function deleteSingle (record) {
+    const rowKey = table.rowKey ? record[table.rowKey] : record['key']
+    confirm(function () {
+      onDelete([rowKey], [record])
+    })
+  }
+
   function openAddModal () {
     setModalTitle('添加' + title)
+    setEditType('create')
     setIsVisible(true)
   }
-  function openEditModal () {
+
+  function openEditModal (record) {
     setModalTitle('编辑' + title)
+    setEditType('update')
+    setEditData(record)
     setIsVisible(true)
   }
 
@@ -39,25 +65,25 @@ function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
       {
         key: 'action',
         title: '操作',
-        render: () => (
+        render: (text, record) => (
           <span>
-        <a href="javascript:" onClick={openEditModal}>编辑</a>
-        <Divider type="vertical"/>
-        <a href="javascript:">删除</a>
-      </span>
+            <a href="javascript:" onClick={() => openEditModal(record)}>编辑</a>
+            <Divider type="vertical"/>
+            <a href="javascript:" onClick={() => deleteSingle(record)}>删除</a>
+          </span>
         )
       }
     ]
   }
 
-  console.log(table)
-
-  function confirm () {
+  function confirm (onOk, onCancel?) {
     Modal.confirm({
       title: '确认要删除吗?',
       content: '该操作将不可撤销。',
       okText: '确认',
-      cancelText: '取消'
+      cancelText: '取消',
+      onOk,
+      onCancel
     })
   }
   return (
@@ -73,7 +99,7 @@ function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
         }
         <span>
           <Button type="primary" onClick={openAddModal}>添加</Button>
-          <Button type="danger" onClick={confirm}>删除</Button>
+          <Button type="danger" onClick={deleteRows}>删除</Button>
         </span>
       </div>
       <Table
@@ -82,9 +108,12 @@ function DataDisplay ({ table, onSearch, container, title, fields }:propTypes) {
       <DataEdit
         container={container}
         title={modalTitle}
+        editType={editType}
         isVisible={isVisible}
         setIsVisible={setIsVisible}
-        fields={fields}/>
+        fields={fields}
+        data={editData}
+        onSubmit={onSubmit}/>
     </div>
   )
 }
