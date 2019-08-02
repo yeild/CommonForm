@@ -10,7 +10,7 @@ interface DataEditPropTypes {
   setIsVisible: (isVisible: boolean) => void
   fields: any
   data: any
-  onSubmit: (data) => void
+  onSubmit: (type: string, data) => void
 }
 
 function DataEdit ({
@@ -89,7 +89,10 @@ function DataEdit ({
   }
   function submit () {
     form.validateFields(function (err, data) {
-      if (!err) onSubmit(data)
+      if (!err) {
+        onSubmit(editType, data)
+        setIsVisible(false)
+      }
     })
   }
   const Container = container === 'modal' ? (

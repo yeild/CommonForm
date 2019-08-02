@@ -1,7 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { message } from 'antd'
 import DataDisplay from 'src/DataDisplay'
+import { getUserList, searchUsers, addUser, deleteUser, updateUser } from '../api'
 
 function User () {
+  const [userList, setUserList] = useState([])
+  function fetchUserList () {
+    getUserList().then(setUserList)
+  }
+  function onSuccess({ code, message:msg }) {
+    if (code === 1) message.success(msg)
+    fetchUserList()
+    // fixme render delayed
+  }
+  useEffect(fetchUserList, [])
+  
   const columns = [
     {
       dataIndex: 'id',
@@ -13,7 +26,8 @@ function User () {
     },
     {
       dataIndex: 'gender',
-      title: '性别'
+      title: '性别',
+      render: (text) => text === 0 ? '男' : '女'
     },
     {
       dataIndex: 'age',
@@ -28,39 +42,14 @@ function User () {
       title: '创建时间',
     },
   ]
-  const data = [
-    {
-      id: 1,
-      name: 'Allen Belem',
-      age: 20,
-      gender: '男',
-      tel: 13000000000,
-      email: 'allen@brown.com',
-      remark: 'Allen Brown'
-    },
-    {
-      id: 2,
-      name: 'Berry Jerry',
-      age: 21,
-      gender: '男',
-      tel: 13111111111,
-      email: 'berry@jerry.com',
-      remark: 'Berry Jerry'
-    },
-    {
-      id: 3,
-      name: 'Anna Ella',
-      age: 22,
-      gender: '女',
-      tel: 13222222222,
-      email: 'anna@ella.com',
-      remark: 'Anna Ella'
-    }
-  ]
   const fields = [
     {
       col: 2,
       fields: [
+        {
+          dataIndex: 'id',
+          title: 'ID'
+        },
         {
           dataIndex: 'name',
           title: '姓名',
@@ -118,20 +107,20 @@ function User () {
     },
   ]
   function search (key) {
-    console.log(key)
+    searchUsers(key).then(setUserList)
   }
-  function deleteItem (keys, items) {
-    console.log(keys)
-    console.log(items)
+  function deleteUsers (ids) {
+    deleteUser(ids).then(onSuccess)
   }
-  function submit (data) {
-    console.log(data)
+  function submit (type, data) {
+    if (type === 'create') addUser(data).then(onSuccess)
+    else updateUser(data.id, data).then(onSuccess)
   }
   return (
     <DataDisplay
-      table={{ columns, dataSource: data, rowKey: 'id' }}
+      table={{ columns, dataSource: userList, rowKey: 'id' }}
       onSearch={search}
-      onDelete={deleteItem}
+      onDelete={deleteUsers}
       container="drawer"
       title="用户"
       fields={fields}

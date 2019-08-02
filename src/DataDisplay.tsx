@@ -10,7 +10,7 @@ interface DataDisplayPropTypes {
   container?: 'modal' | 'drawer'
   title?: string
   fields: any
-  onSubmit: (data) => void
+  onSubmit: (type:string, data) => void
 }
 
 function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onSubmit }:DataDisplayPropTypes) {
