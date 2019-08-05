@@ -1,30 +1,17 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
-const webpack = require('webpack')
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base')
 
 module.exports = merge(baseConfig, {
   mode: 'production',
-  devtool: 'source-map',
+  entry: './demo/index.tsx',
   output: {
-    filename: 'static/js/[name].[chunkhash].js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      }
-    ]
+    path: path.join(__dirname, '..', 'dist'),
+    filename: 'main.js',
+    libraryTarget: 'commonjs2'
   },
   optimization: {
     minimize: true,
@@ -51,31 +38,6 @@ module.exports = merge(baseConfig, {
         root: path.resolve(__dirname, '..'),
         verbose: false
       }
-    ),
-    new HtmlWebpackPlugin({
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true
-      },
-    }),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(__dirname, '../static'),
-        to: 'static'
-      }
-    ]),
-    new webpack.HashedModuleIdsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'static/css/[name].[contenthash].css'
-    }),
-    new OptimizeCssAssetsPlugin()
+    )
   ]
 })

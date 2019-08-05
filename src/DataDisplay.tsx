@@ -4,16 +4,17 @@ import DataEdit from './DataEdit'
 import './index.css'
 
 interface DataDisplayPropTypes {
-  table: any
+  tableProps: any
   onSearch?: (key:string) => void
   onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
   container?: 'modal' | 'drawer'
+  containerProps?: any
   title?: string
   fields: any
   onSubmit: (type:string, data) => void
 }
 
-function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onSubmit }:DataDisplayPropTypes) {
+function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProps, title, fields, onSubmit }:DataDisplayPropTypes) {
   const [searchKey, setSearchKey] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
@@ -28,6 +29,10 @@ function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onS
     }
   }
 
+  function search () {
+    if (searchKey !== '') onSearch(searchKey)
+  }
+
   function deleteRows () {
     if (selectedRowKeys.length === 0) {
       message.warning('请选择要删除的数据')
@@ -39,7 +44,7 @@ function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onS
   }
 
   function deleteSingle (record) {
-    const rowKey = table.rowKey ? record[table.rowKey] : record['key']
+    const rowKey = tableProps.rowKey ? record[tableProps.rowKey] : record['key']
     confirm(function () {
       onDelete([rowKey], [record])
     })
@@ -58,10 +63,10 @@ function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onS
     setIsVisible(true)
   }
 
-  const tableProps = {
-    ...table,
+  const tablePropsWithAction = {
+    ...tableProps,
     columns: [
-      ...table.columns,
+      ...tableProps.columns,
       {
         key: 'action',
         title: '操作',
@@ -93,7 +98,7 @@ function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onS
           onSearch ? (
             <div className="commonTable-search">
               <Input placeholder="用户名" onChange={e => setSearchKey(e.target.value)}/>
-              <Button type="primary" onClick={() => onSearch(searchKey)}>查询</Button>
+              <Button type="primary" onClick={search}>查询</Button>
             </div>
           ) : null
         }
@@ -103,10 +108,11 @@ function DataDisplay ({ table, onSearch, onDelete, container, title, fields, onS
         </span>
       </div>
       <Table
-        {...tableProps}
-        rowSelection={rowSelection}/>
+        rowSelection={rowSelection}
+        {...tablePropsWithAction}/>
       <DataEdit
         container={container}
+        containerProps={containerProps}
         title={modalTitle}
         editType={editType}
         isVisible={isVisible}

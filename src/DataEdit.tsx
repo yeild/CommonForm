@@ -4,6 +4,7 @@ import { Modal, Drawer, Form, Typography, Row, Col, Input, InputNumber, Select, 
 interface DataEditPropTypes {
   form: any
   container?: 'modal' | 'drawer'
+  containerProps?: any
   title: string
   editType: string
   isVisible: boolean
@@ -17,6 +18,7 @@ function DataEdit ({
   isVisible,
   setIsVisible,
   container = 'modal',
+  containerProps,
   title,
   editType,
   form,
@@ -33,29 +35,29 @@ function DataEdit ({
 
       fields.forEach(function ({
         dataIndex,
-        title,
+        label,
         type = 'string',
         initialValue,
+        inputProps,
         rules,
-        placeholder = title,
         options // 下拉框的选项
       }, index) {
+        inputProps.placeholder = inputProps.placeholder || label
         initialValue = isCreate ? initialValue : data[dataIndex]
         const getFieldDecorator = form.getFieldDecorator
         const input = (function () {
           if (type === 'string' || type === 'number' || type === 'textarea') {
             const InputType = type === 'string' ? Input : type === 'number' ? InputNumber : Input.TextArea
-
             return getFieldDecorator(dataIndex, {
               initialValue,
               rules
               // @ts-ignore
-            })(<InputType placeholder={placeholder}/>)
+            })(<InputType {...inputProps}/>)
           }
           return getFieldDecorator(dataIndex, {
             initialValue,
             rules
-          })(<Select>
+          })(<Select {...inputProps}>
             {
               options.map(function (option, index) {
                 const value = option.value || index
@@ -67,7 +69,7 @@ function DataEdit ({
         }())
         rows.push(
           <Col span={24 / col} key={index}>
-            <Form.Item label={title}
+            <Form.Item label={label}
               labelCol={labelCol}
               wrapperCol={wrapperCol}>
               {input}
@@ -102,7 +104,8 @@ function DataEdit ({
       title={title}
       okText="确认"
       cancelText="取消"
-      onCancel={hideEdit}>
+      onCancel={hideEdit}
+      {...containerProps}>
       <Form>
         {getFields()}
       </Form>
@@ -110,10 +113,11 @@ function DataEdit ({
   ) : (
     <Drawer
       className="commonTable-edit"
-      width="80%"
+      width="90%"
       visible={isVisible}
       title={title}
-      onClose={hideEdit}>
+      onClose={hideEdit}
+      {...containerProps}>
       <Form>
         {getFields()}
         <Row>

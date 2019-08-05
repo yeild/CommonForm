@@ -32,7 +32,7 @@ let ID = userList.length + 1
 export function getUserList () {
   return new Promise(function (resolve) {
     setTimeout(function () {
-      resolve(userList)
+      resolve([...userList])
     }, 300)
   })
 }
@@ -69,7 +69,6 @@ export function deleteUser (ids) {
     }, 100)
   })
 }
-
 
 export function updateUser (id, data) {
   return new Promise(function (resolve) {

@@ -8,13 +8,13 @@ function User () {
   function fetchUserList () {
     getUserList().then(setUserList)
   }
-  function onSuccess({ code, message:msg }) {
+  function onSuccess ({ code, message: msg }) {
     if (code === 1) message.success(msg)
     fetchUserList()
     // fixme render delayed
   }
   useEffect(fetchUserList, [])
-  
+
   const columns = [
     {
       dataIndex: 'id',
@@ -31,16 +31,16 @@ function User () {
     },
     {
       dataIndex: 'age',
-      title: '年龄',
+      title: '年龄'
     },
     {
       dataIndex: 'email',
-      title: '邮箱',
+      title: '邮箱'
     },
     {
       dataIndex: 'createTime',
-      title: '创建时间',
-    },
+      title: '创建时间'
+    }
   ]
   const fields = [
     {
@@ -48,11 +48,12 @@ function User () {
       fields: [
         {
           dataIndex: 'id',
-          title: 'ID'
+          label: 'ID',
+          inputProps: { disabled: true }
         },
         {
           dataIndex: 'name',
-          title: '姓名',
+          label: '姓名',
           required: true,
           rules: [{
             required: true,
@@ -61,19 +62,19 @@ function User () {
         },
         {
           dataIndex: 'gender',
-          title: '性别',
+          label: '性别',
           type: 'select',
           options: ['男', '女'],
           initialValue: 0
         },
         {
           dataIndex: 'age',
-          title: '年龄',
+          label: '年龄',
           type: 'number'
         },
         {
           dataIndex: 'tel',
-          title: '手机号',
+          label: '手机号',
           type: 'number',
           rules: [{
             pattern: /^1[3456789]\d{9}$/,
@@ -82,7 +83,7 @@ function User () {
         },
         {
           dataIndex: 'email',
-          title: '邮箱',
+          label: '邮箱',
           rules: [{
             pattern: /^\w+@[a-z0-9]+\.[a-z]{2,4}$/,
             message: '邮箱格式错误'
@@ -100,11 +101,11 @@ function User () {
       fields: [
         {
           dataIndex: 'remark',
-          title: '备注',
+          label: '备注',
           type: 'textarea'
         }
       ]
-    },
+    }
   ]
   function search (key) {
     searchUsers(key).then(setUserList)
@@ -118,7 +119,7 @@ function User () {
   }
   return (
     <DataDisplay
-      table={{ columns, dataSource: userList, rowKey: 'id' }}
+      tableProps={{ columns, dataSource: userList, rowKey: 'id' }}
       onSearch={search}
       onDelete={deleteUsers}
       container="drawer"
