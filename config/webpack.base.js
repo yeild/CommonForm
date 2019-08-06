@@ -31,10 +31,6 @@ module.exports = {
         test: /\.(tsx?|jsx)$/,
         include: [resolve('demo'), resolve('src')],
         use: 'ts-loader'
-      },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
       }
     ]
   }

@@ -1,27 +1,25 @@
 const webpack = require('webpack')
-const config = require('../config/webpack.prod')
+const demoConfig = require('../config/webpack.demo')
+const moduleConfig = require('../config/webpack.module')
 const ora = require('ora')
 const chalk = require('chalk')
 
-const spinner = ora('building...').start()
+const spinner = ora('building...')
+const taskName = ['demo', 'module']
+const config = [demoConfig, moduleConfig]
 
-webpack(config, (err, stats) => {
+config.forEach((i, index) => {
+  spinner.start()
+  webpack(i, (err, stats) => {
 
-  spinner.stop()
-  if (err) throw err
+    spinner.stop()
+    if (err) throw err
 
-  console.log(stats.toString({
-      colors: true,
-      modules: false,
-      children: false,
-      chunks: false,
-      chunkModules: false
-    }) + '\n\n')
+    if (stats.hasErrors()) {
+      console.log(chalk.red(stats.compilation.errors))
+      process.exit(1)
+    }
 
-  if (stats.hasErrors()) {
-    console.log(chalk.red('  Build failed with errors.\n'))
-    process.exit(1)
-  }
-
-  console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.cyan(`  Build for ${taskName[index]} complete.\n`))
+  })
 })

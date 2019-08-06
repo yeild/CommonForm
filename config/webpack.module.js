@@ -1,5 +1,4 @@
 const path = require('path')
-const webpack = require('webpack')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const merge = require('webpack-merge')
@@ -7,33 +6,30 @@ const baseConfig = require('./webpack.base')
 
 module.exports = merge(baseConfig, {
   mode: 'production',
-  entry: './demo/index.tsx',
+  entry: './src/DataDisplay.tsx',
   output: {
-    path: path.join(__dirname, '..', 'dist'),
+    path: path.join(__dirname, '..', 'lib'),
     filename: 'main.js',
     libraryTarget: 'commonjs2'
   },
-  optimization: {
-    minimize: true,
-    splitChunks: {
-      chunks: 'all',
-      minSize: 0,
-      cacheGroups: {
-        vendors: {
-          name: 'vendors',
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        manifest: {
-          name: 'manifest',
-          priority: -20
-        }
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
-    }
+    ]
+  },
+  externals: {
+    react: ['react'],
+    antd: ['antd']
+  },
+  optimization: {
+    minimize: true
   },
   plugins: [
     new CleanWebpackPlugin(
-      ['dist'],
+      ['lib'],
       {
         root: path.resolve(__dirname, '..'),
         verbose: false
