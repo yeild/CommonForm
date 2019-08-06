@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Drawer, Form, Typography, Row, Col, Input, InputNumber, Select, Button } from 'antd'
+import { Modal, Drawer, Form, Typography, Row, Col, Input, InputNumber, Select, Radio, Checkbox, Button } from 'antd'
 
 interface DataEditPropTypes {
   form: any
@@ -36,26 +36,39 @@ function DataEdit ({
       fields.forEach(function ({
         dataIndex,
         label,
+        render,
         type = 'string',
-        initialValue,
-        inputProps,
+        defaultValue,
+        inputProps = {},
         rules,
-        options // 下拉框的选项
+        options // Select/Checkbox/Radio的选项
       }, index) {
         inputProps.placeholder = inputProps.placeholder || label
-        initialValue = isCreate ? initialValue : data[dataIndex]
+        defaultValue = isCreate ? defaultValue : data[dataIndex]
         const getFieldDecorator = form.getFieldDecorator
         const input = (function () {
+          if (render) return render()
+
           if (type === 'string' || type === 'number' || type === 'textarea') {
             const InputType = type === 'string' ? Input : type === 'number' ? InputNumber : Input.TextArea
             return getFieldDecorator(dataIndex, {
-              initialValue,
+              initialValue: defaultValue,
               rules
               // @ts-ignore
             })(<InputType {...inputProps}/>)
           }
+
+          if (type === 'radio' || type === 'checkbox') {
+            const InputType = type === 'radio' ? Radio : Checkbox
+            return getFieldDecorator(dataIndex, {
+              initialValue: defaultValue,
+              rules
+              // @ts-ignore
+            })(<InputType.Group options={options} {...inputProps}/>)
+          }
+          
           return getFieldDecorator(dataIndex, {
-            initialValue,
+            initialValue: defaultValue,
             rules
           })(<Select {...inputProps}>
             {

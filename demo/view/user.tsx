@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { message } from 'antd'
 import DataDisplay from 'src/DataDisplay'
+import { Checkbox } from 'antd'
 import { getUserList, searchUsers, addUser, deleteUser, updateUser } from '../api'
 
 function User () {
@@ -56,16 +57,21 @@ function User () {
           label: '姓名',
           required: true,
           rules: [{
-            required: true,
-            type: 'string'
+            required: true
           }]
         },
         {
           dataIndex: 'gender',
           label: '性别',
-          type: 'select',
-          options: ['男', '女'],
-          initialValue: 0
+          type: 'radio',
+          options: [{
+            label: '男',
+            value: 0
+          }, {
+            label: '女',
+            value: 1
+          }],
+          defaultValue: 0
         },
         {
           dataIndex: 'age',
@@ -88,6 +94,26 @@ function User () {
             pattern: /^\w+@[a-z0-9]+\.[a-z]{2,4}$/,
             message: '邮箱格式错误'
           }]
+        },
+        {
+          dataIndex: 'city',
+          label: '城市',
+          type: 'select',
+          options: ['北京', '上海', '广州'],
+          defaultValue: 0
+        },
+        {
+          dataIndex: 'authority',
+          label: '权限',
+          type: 'checkbox',
+          options: [{
+            label: '访问',
+            value: 0
+          }, {
+            label: '评论',
+            value: 1
+          }],
+          defaultValue: [0, 1]
         }
       ]
     },
