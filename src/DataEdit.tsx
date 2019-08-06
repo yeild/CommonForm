@@ -29,7 +29,7 @@ function DataEdit ({
   function getFields () {
     const isCreate = editType === 'create'
     const children = []
-    fields.forEach(function ({ title, col = 1, labelCol = { span: 6 }, wrapperCol = { span: 16 }, fields }, index) {
+    fields.forEach(function ({ title, col = 1, labelCol = { span: 6 }, wrapperCol = { span: 18 }, fields }, index) {
       const rows = []
       if (title) rows.push(<Typography.Title level={4}>{title}</Typography.Title>)
 
@@ -41,11 +41,12 @@ function DataEdit ({
         defaultValue,
         inputProps = {},
         rules,
-        options // Select/Checkbox/Radio的选项
+        options, // Select/Checkbox/Radio的选项
+        relate
       }, index) {
         inputProps.placeholder = inputProps.placeholder || label
         defaultValue = isCreate ? defaultValue : data[dataIndex]
-        const getFieldDecorator = form.getFieldDecorator
+        const { getFieldDecorator, getFieldValue } = form
         const input = (function () {
           if (render) return render()
 
@@ -58,6 +59,8 @@ function DataEdit ({
             })(<InputType {...inputProps}/>)
           }
 
+          if (relate) options = options[getFieldValue(relate)] || []
+
           if (type === 'radio' || type === 'checkbox') {
             const InputType = type === 'radio' ? Radio : Checkbox
             return getFieldDecorator(dataIndex, {
@@ -66,7 +69,7 @@ function DataEdit ({
               // @ts-ignore
             })(<InputType.Group options={options} {...inputProps}/>)
           }
-          
+
           return getFieldDecorator(dataIndex, {
             initialValue: defaultValue,
             rules

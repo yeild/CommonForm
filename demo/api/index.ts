@@ -1,30 +1,39 @@
 let userList = [
   {
     id: 1,
-    name: 'Allen Belem',
+    name: '小明',
     age: 20,
-    gender: 0,
     tel: 13000000000,
-    email: 'allen@brown.com',
-    remark: 'Allen Brown'
+    email: 'xiaoming@example.com',
+    province: 0,
+    city: 0,
+    gender: 0,
+    interest: [0, 1, 2, 3],
+    createDate: '2019/1/1'
   },
   {
     id: 2,
-    name: 'Berry Jerry',
+    name: '李雷',
     age: 21,
-    gender: 0,
     tel: 13111111111,
-    email: 'berry@jerry.com',
-    remark: 'Berry Jerry'
+    email: 'lilei@example.com',
+    province: 1,
+    city: 1,
+    gender: 0,
+    interest: [0, 1, 2, 3],
+    createDate: '2019/1/1'
   },
   {
     id: 3,
-    name: 'Anna Ella',
+    name: '韩梅梅',
     age: 22,
-    gender: 1,
     tel: 13222222222,
-    email: 'anna@ella.com',
-    remark: 'Anna Ella'
+    email: 'hanmeimei@example.com',
+    province: 2,
+    city: 1,
+    gender: 1,
+    interest: [0, 1, 2, 3],
+    createDate: '2019/1/1'
   }
 ]
 let ID = userList.length + 1
@@ -49,6 +58,7 @@ export function addUser (user) {
   return new Promise(function (resolve) {
     setTimeout(function () {
       user.id = ID++
+      user.createDate = new Date().toLocaleDateString()
       userList.push(user)
       resolve({
         code: 1,

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { message } from 'antd'
 import DataDisplay from 'src/DataDisplay'
-import { Checkbox } from 'antd'
 import { getUserList, searchUsers, addUser, deleteUser, updateUser } from '../api'
 
 function User () {
@@ -12,7 +11,6 @@ function User () {
   function onSuccess ({ code, message: msg }) {
     if (code === 1) message.success(msg)
     fetchUserList()
-    // fixme render delayed
   }
   useEffect(fetchUserList, [])
 
@@ -39,8 +37,8 @@ function User () {
       title: '邮箱'
     },
     {
-      dataIndex: 'createTime',
-      title: '创建时间'
+      dataIndex: 'createDate',
+      title: '创建日期'
     }
   ]
   const fields = [
@@ -51,7 +49,12 @@ function User () {
           dataIndex: 'id',
           label: 'ID',
           inputProps: { disabled: true }
-        },
+        }
+      ]
+    },
+    {
+      col: 2,
+      fields: [
         {
           dataIndex: 'name',
           label: '姓名',
@@ -61,23 +64,15 @@ function User () {
           }]
         },
         {
-          dataIndex: 'gender',
-          label: '性别',
-          type: 'radio',
-          options: [{
-            label: '男',
-            value: 0
-          }, {
-            label: '女',
-            value: 1
-          }],
-          defaultValue: 0
-        },
-        {
           dataIndex: 'age',
           label: '年龄',
           type: 'number'
-        },
+        }
+      ]
+    },
+    {
+      col: 2,
+      fields: [
         {
           dataIndex: 'tel',
           label: '手机号',
@@ -96,24 +91,76 @@ function User () {
           }]
         },
         {
-          dataIndex: 'city',
-          label: '城市',
+          dataIndex: 'province',
+          label: '省',
           type: 'select',
-          options: ['北京', '上海', '广州'],
+          options: ['四川', '浙江', '江苏'],
           defaultValue: 0
         },
         {
-          dataIndex: 'authority',
-          label: '权限',
-          type: 'checkbox',
+          dataIndex: 'city',
+          label: '市',
+          type: 'select',
+          relate: 'province',
+          options: {
+            0: ['成都', '绵阳'],
+            1: ['杭州', '宁波'],
+            2: ['南京', '无锡'],
+          },
+          defaultValue: 0
+        }
+      ]
+    },
+    {
+      col: 2,
+      fields: [
+        {
+          dataIndex: 'gender',
+          label: '性别',
+          type: 'radio',
           options: [{
-            label: '访问',
+            label: '男',
             value: 0
           }, {
-            label: '评论',
+            label: '女',
             value: 1
           }],
-          defaultValue: [0, 1]
+          defaultValue: 0
+        },
+        {
+          dataIndex: 'interest',
+          label: '爱好',
+          type: 'checkbox',
+          relate: 'gender',
+          options: {
+            0: [{
+              label: '唱',
+              value: 0
+            }, {
+              label: '跳',
+              value: 1
+            }, {
+              label: 'rap',
+              value: 2
+            }, {
+              label: '篮球',
+              value: 3
+            }],
+            1: [{
+              label: '购物',
+              value: 0
+            }, {
+              label: '购物',
+              value: 1
+            }, {
+              label: '购物',
+              value: 2
+            }, {
+              label: '购物',
+              value: 3
+            }]
+          },
+          defaultValue: [0, 1, 2, 3]
         }
       ]
     },
@@ -122,7 +169,7 @@ function User () {
         span: 3
       },
       wrapperCol: {
-        span: 20
+        span: 21
       },
       fields: [
         {
@@ -148,7 +195,7 @@ function User () {
       tableProps={{ columns, dataSource: userList, rowKey: 'id' }}
       onSearch={search}
       onDelete={deleteUsers}
-      container="drawer"
+      containerProps={{ width: 760 }}
       title="用户"
       fields={fields}
       onSubmit={submit}/>
