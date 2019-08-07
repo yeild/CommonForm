@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { message } from 'antd'
-import DataDisplay from 'src/DataDisplay'
+import Form from 'src/DataDisplay'
 import { getUserList, searchUsers, addUser, deleteUser, updateUser } from '../api'
 
 function User () {
@@ -58,7 +58,6 @@ function User () {
         {
           dataIndex: 'name',
           label: '姓名',
-          required: true,
           rules: [{
             required: true
           }]
@@ -105,7 +104,7 @@ function User () {
           options: {
             0: ['成都', '绵阳'],
             1: ['杭州', '宁波'],
-            2: ['南京', '无锡'],
+            2: ['南京', '无锡']
           },
           defaultValue: 0
         }
@@ -191,7 +190,7 @@ function User () {
     else updateUser(data.id, data).then(onSuccess)
   }
   return (
-    <DataDisplay
+    <Form
       tableProps={{ columns, dataSource: userList, rowKey: 'id' }}
       onSearch={search}
       onDelete={deleteUsers}

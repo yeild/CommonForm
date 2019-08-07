@@ -1,5 +1,6 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const merge = require('webpack-merge')
 const baseConfig = require('./webpack.base')
@@ -9,7 +10,7 @@ module.exports = merge(baseConfig, {
   entry: './src/DataDisplay.tsx',
   output: {
     path: path.join(__dirname, '..', 'lib'),
-    filename: 'main.js',
+    filename: 'DataDisplay.js',
     libraryTarget: 'commonjs2'
   },
   module: {
@@ -34,6 +35,11 @@ module.exports = merge(baseConfig, {
         root: path.resolve(__dirname, '..'),
         verbose: false
       }
-    )
+    ),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../src/DataDisplay.d.ts')
+      }
+    ])
   ]
 })

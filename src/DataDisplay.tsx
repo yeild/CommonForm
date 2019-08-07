@@ -3,18 +3,7 @@ import { Divider, Table, Input, Button, Modal, message } from 'antd'
 import DataEdit from './DataEdit'
 import './index.css'
 
-interface DataDisplayPropTypes {
-  tableProps: any
-  onSearch?: (key:string) => void
-  onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
-  container?: 'modal' | 'drawer'
-  containerProps?: any
-  title?: string
-  fields: any
-  onSubmit: (type:string, data) => void
-}
-
-function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProps, title, fields, onSubmit }:DataDisplayPropTypes) {
+function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProps, title, fields, onSubmit }:any) {
   const [searchKey, setSearchKey] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
