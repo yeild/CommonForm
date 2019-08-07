@@ -17,6 +17,7 @@ interface FieldTypes {
   defaultValue?: string | number
   relate?: string
   options?: string[] | OptionTypes[] | MappedOptionTypes
+  render?: () => any
 }
 
 interface FieldSectionTypes {

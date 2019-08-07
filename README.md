@@ -203,6 +203,12 @@ function User () {
         <td>string[] | OptionTypes[] | MappedOptionTypes</td>
         <td></td>
     </tr>
+    <tr>
+        <td>render</td>
+        <td>渲染函数，可由此生成自定义输入控件</td>
+        <td>function</td>
+        <td></td>
+    </tr>
 </table>
 
 ##### OptionTypes
