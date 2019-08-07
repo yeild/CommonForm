@@ -3,7 +3,19 @@ import { Divider, Table, Input, Button, Modal, message } from 'antd'
 import DataEdit from './DataEdit'
 import './index.css'
 
-function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProps, title, fields, onSubmit }:any) {
+interface DataDisplayPropTypes {
+  tableProps: any
+  searchPlaceholder?: string
+  onSearch?: (key:string) => void
+  onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
+  container?: 'modal' | 'drawer'
+  containerProps?: any
+  title?: string
+  fields: any[]
+  onSubmit: (type:string, data) => void
+}
+
+function DataDisplay ({ tableProps, searchPlaceholder, onSearch, onDelete, container, containerProps, title, fields, onSubmit }:DataDisplayPropTypes) {
   const [searchKey, setSearchKey] = useState('')
   const [isVisible, setIsVisible] = useState(false)
   const [modalTitle, setModalTitle] = useState('')
@@ -11,13 +23,12 @@ function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProp
   const [editData, setEditData] = useState({})
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   const [selectedRows, setSelectedRows] = useState([])
-  const rowSelection = {
+  const rowSelection = onDelete ? {
     onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRowKeys(selectedRowKeys)
       setSelectedRows(selectedRows)
     }
-  }
-
+  } : null
   function search () {
     if (searchKey !== '') onSearch(searchKey)
   }
@@ -46,7 +57,7 @@ function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProp
   }
 
   function openEditModal (record) {
-    setModalTitle('编辑' + title)
+    setModalTitle('修改' + title)
     setEditType('update')
     setEditData(record)
     setIsVisible(true)
@@ -61,9 +72,13 @@ function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProp
         title: '操作',
         render: (text, record) => (
           <span>
-            <a href="javascript:" onClick={() => openEditModal(record)}>编辑</a>
-            <Divider type="vertical"/>
-            <a href="javascript:" onClick={() => deleteSingle(record)}>删除</a>
+            <a href="javascript:" onClick={() => openEditModal(record)}>修改</a>
+            { onDelete ? (
+              <>
+                <Divider type="vertical"/>
+                <a href="javascript:" onClick={() => deleteSingle(record)}>删除</a>
+              </>
+            ) : null}
           </span>
         )
       }
@@ -86,14 +101,14 @@ function DataDisplay ({ tableProps, onSearch, onDelete, container, containerProp
         {
           onSearch ? (
             <div className="commonTable-search">
-              <Input placeholder="用户名" onChange={e => setSearchKey(e.target.value)}/>
+              <Input placeholder={searchPlaceholder} onChange={e => setSearchKey(e.target.value)}/>
               <Button type="primary" onClick={search}>查询</Button>
             </div>
-          ) : null
+          ) : <span />
         }
         <span>
           <Button type="primary" onClick={openAddModal}>添加</Button>
-          <Button type="danger" onClick={deleteRows}>删除</Button>
+          {onDelete ? <Button type="danger" onClick={deleteRows}>删除</Button> : null}
         </span>
       </div>
       <Table

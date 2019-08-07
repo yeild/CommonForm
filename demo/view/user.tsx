@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { message } from 'antd'
-import Form from 'src/DataDisplay'
+import CommonForm from 'src/DataDisplay'
 import { getUserList, searchUsers, addUser, deleteUser, updateUser } from '../api'
 
 function User () {
@@ -190,8 +190,9 @@ function User () {
     else updateUser(data.id, data).then(onSuccess)
   }
   return (
-    <Form
+    <CommonForm
       tableProps={{ columns, dataSource: userList, rowKey: 'id' }}
+      searchPlaceholder="用户名"
       onSearch={search}
       onDelete={deleteUsers}
       containerProps={{ width: 760 }}

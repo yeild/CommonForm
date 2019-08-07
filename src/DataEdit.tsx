@@ -9,7 +9,7 @@ interface DataEditPropTypes {
   editType: string
   isVisible: boolean
   setIsVisible: (isVisible: boolean) => void
-  fields: any
+  fields: any[]
   data: any
   onSubmit: (type: string, data) => void
 }
@@ -77,8 +77,8 @@ function DataEdit ({
             {
               options.map(function (option, index) {
                 const value = option.value || index
-                const text = option.text || option
-                return <Select.Option key={value} value={value}>{text}</Select.Option>
+                const label = option.label || option
+                return <Select.Option key={value} value={value}>{label}</Select.Option>
               })
             }
           </Select>)
@@ -120,7 +120,9 @@ function DataEdit ({
       title={title}
       okText="确认"
       cancelText="取消"
+      onOk={submit}
       onCancel={hideEdit}
+      destroyOnClose={true}
       {...containerProps}>
       <Form>
         {getFields()}
@@ -133,6 +135,7 @@ function DataEdit ({
       visible={isVisible}
       title={title}
       onClose={hideEdit}
+      destroyOnClose={true}
       {...containerProps}>
       <Form>
         {getFields()}

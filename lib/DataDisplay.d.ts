@@ -3,32 +3,37 @@ interface OptionTypes {
   value: any
 }
 
+interface MappedOptionTypes {
+  [key: string]: string[] | OptionTypes[]
+  [key: number]: string[] | OptionTypes[]
+}
+
 interface FieldTypes {
   dataIndex: string
   label: string
   type?: string
-  inputProps?: any
-  rules?: any[]
+  inputProps?: object
+  rules?: object[]
+  defaultValue?: string | number
   relate?: string
-  options?: string[] | OptionTypes[]
-  defaultValue?: any
+  options?: string[] | OptionTypes[] | MappedOptionTypes
 }
 
-interface FieldsTypes {
+interface FieldSectionTypes {
   col?: number
   title?: string
-  labelCol?: any
-  wrapperCol?: any
+  labelCol?: object
+  wrapperCol?: object
   fields: FieldTypes[]
 }
 
 interface DataDisplayProps {
-  tableProps: any
-  fields: FieldsTypes[]
+  tableProps: object
+  fields: FieldSectionTypes[]
   onSearch?: (key:string) => void
   onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
   container?: 'modal' | 'drawer'
-  containerProps?: any
+  containerProps?: object
   title?: string
   onSubmit: (type:string, data) => void
 }
