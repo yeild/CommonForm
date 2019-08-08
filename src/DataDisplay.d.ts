@@ -30,12 +30,13 @@ interface FieldSectionTypes {
 
 interface DataDisplayProps {
   tableProps: object
-  fields: FieldSectionTypes[]
+  searchPlaceholder?: string
   onSearch?: (key:string) => void
   onDelete?: (selectedRowKeys:any[], selectedRows:any[]) => void
   container?: 'modal' | 'drawer'
   containerProps?: object
   title?: string
+  fields: FieldSectionTypes[]
   onSubmit: (type:string, data) => void
 }
 

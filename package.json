@@ -1,6 +1,6 @@
 {
   "name": "antd-common-form",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A react component for showing and editing data with ant-design",
   "scripts": {
     "dev": "webpack-dev-server --config config/webpack.dev.js",
