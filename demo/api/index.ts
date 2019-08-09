@@ -84,9 +84,11 @@ export function updateUser (id, data) {
   return new Promise(function (resolve) {
     setTimeout(function () {
       userList.forEach(function (user, index) {
-        if (user.id === id) userList[index] = {
-          ...userList[index],
-          ...data
+        if (user.id === id) {
+          userList[index] = {
+            ...userList[index],
+            ...data
+          }
         }
       })
       resolve({

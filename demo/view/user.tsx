@@ -48,7 +48,8 @@ function User () {
         {
           dataIndex: 'id',
           label: 'ID',
-          inputProps: { disabled: true }
+          inputProps: { disabled: true },
+          visible: (fields, editType) => editType === 'update'
         }
       ]
     },
@@ -93,8 +94,25 @@ function User () {
           dataIndex: 'province',
           label: '省',
           type: 'select',
-          options: ['四川', '浙江', '江苏'],
-          defaultValue: 0
+          options: [
+            {
+              label: '请选择',
+              value: -1
+            },
+            {
+              label: '四川',
+              value: 0
+            },
+            {
+              label: '浙江',
+              value: 1
+            },
+            {
+              label: '江苏',
+              value: 2
+            }
+          ],
+          defaultValue: -1
         },
         {
           dataIndex: 'city',
@@ -106,7 +124,8 @@ function User () {
             1: ['杭州', '宁波'],
             2: ['南京', '无锡']
           },
-          defaultValue: 0
+          defaultValue: 0,
+          visible: ({ province }) => province !== -1
         }
       ]
     },

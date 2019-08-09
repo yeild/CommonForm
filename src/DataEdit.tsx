@@ -42,11 +42,14 @@ function DataEdit ({
         inputProps = {},
         rules,
         options, // Select/Checkbox/Radio的选项
-        relate
+        relate,
+        visible = true
       }, index) {
+        const { getFieldDecorator, getFieldValue, getFieldsValue } = form
+        const isVisible = typeof visible === 'function' ? visible(getFieldsValue(), editType) : visible
+        if (!isVisible) return null
         inputProps.placeholder = inputProps.placeholder || label
         defaultValue = isCreate ? defaultValue : data[dataIndex]
-        const { getFieldDecorator, getFieldValue } = form
         const input = (function () {
           if (render) return render()
 
@@ -76,8 +79,8 @@ function DataEdit ({
           })(<Select {...inputProps}>
             {
               options.map(function (option, index) {
-                const value = option.value || index
-                const label = option.label || option
+                const value = option.hasOwnProperty('value') ? option.value : index
+                const label = option.hasOwnProperty('label') ? option.label : option
                 return <Select.Option key={value} value={value}>{label}</Select.Option>
               })
             }

@@ -18,6 +18,7 @@ interface FieldTypes {
   relate?: string
   options?: string[] | OptionTypes[] | MappedOptionTypes
   render?: () => any
+  visible?: (fields: {[key:string]: string | number}, editType: 'create' | 'update') => boolean |  boolean
 }
 
 interface FieldSectionTypes {

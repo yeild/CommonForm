@@ -101,8 +101,8 @@ function User () {
     </tr>
     <tr>
         <td>onSubmit</td>
-        <td>弹窗点击确认时的回调, 参数为所有表单项的值</td>
-        <td>(data: fields) => void</td>
+        <td>弹窗点击确认时的回调, 第一个参数表示编辑类型是新建还是修改，第二个参数为所有表单项的值</td>
+        <td>(editType: 'create' | 'update', fields) => void</td>
         <td></td>
     </tr>
 </table>
@@ -208,6 +208,12 @@ function User () {
         <td>渲染函数，可由此生成自定义输入控件</td>
         <td>function</td>
         <td></td>
+    </tr>
+    <tr>
+        <td>visible</td>
+        <td>该表单项是否可见，可根据编辑类型或某表单项的值决定是否显示</td>
+        <td>(fields, editType) => boolean | boolean</td>
+        <td>true</td>
     </tr>
 </table>
 
