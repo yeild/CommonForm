@@ -211,7 +211,7 @@ function User () {
     </tr>
     <tr>
         <td>visible</td>
-        <td>该表单项是否可见，可根据编辑类型或某表单项的值决定是否显示</td>
+        <td>该表单项是否可见，可根据编辑类型或某表单项的值决定是否显示, <a href=https://github.com/yeild/CommonForm/blob/master/demo/view/user.tsx#L128>示例</a></td>
         <td>(fields, editType) => boolean | boolean</td>
         <td>true</td>
     </tr>
