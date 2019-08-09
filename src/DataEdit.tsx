@@ -46,8 +46,6 @@ function DataEdit ({
         visible = true
       }, index) {
         const { getFieldDecorator, getFieldValue, getFieldsValue } = form
-        const isVisible = typeof visible === 'function' ? visible(getFieldsValue(), editType) : visible
-        if (!isVisible) return null
         inputProps.placeholder = inputProps.placeholder || label
         defaultValue = isCreate ? defaultValue : data[dataIndex]
         const input = (function () {
@@ -86,8 +84,11 @@ function DataEdit ({
             }
           </Select>)
         }())
+
+        const isVisible = typeof visible === 'function' ? visible(getFieldsValue(), editType) : visible
+        const className = !isVisible ? 'commonForm-hidden' : ''
         rows.push(
-          <Col span={24 / col} key={index}>
+          <Col span={24 / col} key={index} className={className}>
             <Form.Item label={label}
               labelCol={labelCol}
               wrapperCol={wrapperCol}>
@@ -118,7 +119,7 @@ function DataEdit ({
   }
   const Container = container === 'modal' ? (
     <Modal
-      className="commonTable-edit"
+      className="commonForm-edit"
       visible={isVisible}
       title={title}
       okText="确认"
@@ -133,7 +134,7 @@ function DataEdit ({
     </Modal>
   ) : (
     <Drawer
-      className="commonTable-edit"
+      className="commonForm-edit"
       width="90%"
       visible={isVisible}
       title={title}

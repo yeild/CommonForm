@@ -96,11 +96,11 @@ function DataDisplay ({ tableProps, searchPlaceholder, onSearch, onDelete, conta
     })
   }
   return (
-    <div className="commonTable">
-      <div className="commonTable-toolbar">
+    <div className="commonForm">
+      <div className="commonForm-toolbar">
         {
           onSearch ? (
-            <div className="commonTable-search">
+            <div className="commonForm-search">
               <Input placeholder={searchPlaceholder} onChange={e => setSearchKey(e.target.value)}/>
               <Button type="primary" onClick={search}>查询</Button>
             </div>

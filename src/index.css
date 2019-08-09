@@ -1,23 +1,27 @@
-.commonTable-toolbar {
+.commonForm-toolbar {
   display: flex;
   justify-content: space-between;
   padding: 2px 8px;
   border-bottom: 1px solid #e8e8e8;
 }
 
-.commonTable-search .ant-input {
+.commonForm-search .ant-input {
   width: 160px;
   margin-left: 8px;
 }
 
-.commonTable-toolbar .ant-btn {
+.commonForm-toolbar .ant-btn {
   margin-left: 8px;
 }
 
-.commonTable-edit .ant-input-number {
+.commonForm-edit .ant-input-number {
   width: 100%;
 }
 
-.commonTable-edit .ant-input-number-handler-wrap {
+.commonForm-edit .ant-input-number-handler-wrap {
   display: none;
+}
+
+.commonForm-hidden {
+  display: none!important;
 }
