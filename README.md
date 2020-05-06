@@ -249,7 +249,7 @@ function User () {
     </tr>
     <tr>
         <td>[key]</td>
-        <td>relate指向的key的每个值对应的选项,具体使用请<a href=https://github.com/yeild/CommonForm/blob/master/demo/view/user.tsx#L103>查看示例</a></td>
+        <td>relate指向的key的每个值对应的选项,具体使用请<a href=https://github.com/yeild/CommonForm/blob/master/demo/view/user.tsx#L121>查看示例</a></td>
         <td>string[] | OptionTypes[]</td>
         <td></td>
     </tr>
